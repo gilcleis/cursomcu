@@ -53,8 +53,8 @@ public class TestConfig implements CommandLineRunner {
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
-		Estado est1 = new Estado(null, "Minas Gerais");
-		Estado est2 = new Estado(null, "São Paulo");
+		Estado est1 = new Estado(null, "Minas Gerais","MG");
+		Estado est2 = new Estado(null, "São Paulo","SP");
 
 		Cidade c1 = new Cidade(null, "Uberlandia", est1);
 		Cidade c2 = new Cidade(null, "São Paulo", est2);

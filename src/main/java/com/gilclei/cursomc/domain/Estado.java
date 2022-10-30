@@ -28,6 +28,9 @@ public class Estado implements Serializable {
 	@Column(unique = true, length = 50, nullable = false)
 	private String nome;
 
+	@Column(unique = true, length = 2, nullable = false)
+	private String sigla;
+
 	@JsonManagedReference
 	@ManyToMany(mappedBy = "estado")
 	private List<Cidade> cidades = new ArrayList<>();
@@ -35,9 +38,10 @@ public class Estado implements Serializable {
 	public Estado() {
 	}
 
-	public Estado(Integer id, String nome) {
+	public Estado(Integer id, String nome, String sigla) {
 		this.id = id;
 		this.nome = nome;
+		this.sigla = sigla;
 	}
 
 	public Integer getId() {
@@ -58,6 +62,14 @@ public class Estado implements Serializable {
 
 	public List<Cidade> getCidades() {
 		return cidades;
+	}
+	
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
 	@Override
