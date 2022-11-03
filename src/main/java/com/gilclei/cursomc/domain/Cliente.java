@@ -34,12 +34,15 @@ public class Cliente implements Serializable {
 	private Integer tipoCliente;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
 	@ElementCollection
 	@CollectionTable(name = "telefones")
 	private Set<String> telefones = new HashSet<>();
+
+	@OneToMany(mappedBy = "cliente")	
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
 	}
@@ -98,6 +101,10 @@ public class Cliente implements Serializable {
 
 	public Set<String> getTelefones() {
 		return telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
