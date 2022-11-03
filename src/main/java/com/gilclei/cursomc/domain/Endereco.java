@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "enderecos")
 public class Endereco implements Serializable {
@@ -25,12 +27,13 @@ public class Endereco implements Serializable {
 	private String bairro;
 	private String cep;
 
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 
 	@ManyToOne
-	@JoinColumn(name = "cidade_id")
+	@JoinColumn(name="cidade_id")
 	private Cidade cidade;
 
 	public Endereco() {
@@ -45,6 +48,7 @@ public class Endereco implements Serializable {
 		this.bairro = bairro;
 		this.cep = cep;
 		this.cliente = cliente;
+		this.cidade = cidade;
 	}
 
 	public Integer getId() {
