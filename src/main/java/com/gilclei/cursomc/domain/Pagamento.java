@@ -18,7 +18,6 @@ import com.gilclei.cursomc.domain.enums.EstadoPagamento;
 @Table(name = "pagamentos")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) //herança = todos os campo tabela unica ou uma tabela para cada subclasse
 public abstract class Pagamento implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
