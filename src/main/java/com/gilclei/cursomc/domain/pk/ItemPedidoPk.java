@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gilclei.cursomc.domain.Pedido;
 import com.gilclei.cursomc.domain.Produto;
 
@@ -14,6 +15,7 @@ import com.gilclei.cursomc.domain.Produto;
 public class ItemPedidoPk implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pedido_id")
 	private Pedido pedido;
@@ -22,6 +24,7 @@ public class ItemPedidoPk implements Serializable {
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
 
+	@JsonIgnore
 	public Pedido getPedido() {
 		return pedido;
 	}
@@ -29,7 +32,8 @@ public class ItemPedidoPk implements Serializable {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-
+	
+	@JsonIgnore
 	public Produto getProduto() {
 		return produto;
 	}
