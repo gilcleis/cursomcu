@@ -2,6 +2,7 @@ package com.gilclei.cursomc.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gilclei.cursomc.domain.Categoria;
+import com.gilclei.cursomc.dto.CategoriaDTO;
 import com.gilclei.cursomc.services.CategoriaService;
 
 @RestController
@@ -27,9 +29,10 @@ public class CategoriaResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Categoria>> findAll() {
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> categorias = service.findAll();
-		return ResponseEntity.ok().body(categorias);
+		List<CategoriaDTO> listDTO = categorias.stream().map(x-> new CategoriaDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@GetMapping(value = "/{id}")

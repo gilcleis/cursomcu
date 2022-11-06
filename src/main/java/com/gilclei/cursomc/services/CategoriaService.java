@@ -24,7 +24,7 @@ public class CategoriaService {
 
 	public Categoria insert(Categoria obj) {
 		try {
-
+			obj.setId(null);
 			return repository.save(obj);
 		} catch (DataIntegrityViolationException e) {
 			throw new IntegrityConstraintViolationException(e.getCause().getLocalizedMessage());
