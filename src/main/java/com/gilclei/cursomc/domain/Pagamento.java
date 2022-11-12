@@ -17,18 +17,19 @@ import com.gilclei.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
 @Table(name = "pagamentos")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //herança = todos os campo tabela unica ou uma tabela para cada subclasse
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // herança = todos os campo tabela unica ou uma tabela para cada
+														// subclasse
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Integer id;
 	private Integer estado;
-	
+
 	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
-	@MapsId //mapeia o id da tabela pedido
+	@MapsId // mapeia o id da tabela pedido
 	private Pedido pedido;
 
 	public Pagamento() {
@@ -36,7 +37,7 @@ public abstract class Pagamento implements Serializable {
 
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		this.id = id;
-		this.estado = estado.getCod();
+		this.estado = (estado == null) ? null : estado.getCod();
 		this.pedido = pedido;
 	}
 
