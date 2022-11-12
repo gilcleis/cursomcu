@@ -8,9 +8,13 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.gilclei.cursomc.domain.Cliente;
+import com.gilclei.cursomc.dto.ClienteDTO;
 import com.gilclei.cursomc.repositories.ClienteRepository;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
@@ -62,7 +66,17 @@ public class ClienteService {
 
 	private void updateData(Cliente entity, Cliente obj) {
 		entity.setNome(obj.getNome());
+		entity.setEmail(obj.getEmail());
+	}
 
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repository.findAll(pageRequest);
+	}
+	
+	public Cliente fromDTO(ClienteDTO objDto) {
+//		throw new UnsupportedOperationException();
+		return new Cliente(objDto.getId(), objDto.getNome(),objDto.getEmail(),null,null);
 	}
 
 }
