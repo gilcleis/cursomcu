@@ -51,7 +51,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}",produces="application/json")
 	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
 		Categoria categoria = service.findById(id);
 		return ResponseEntity.ok().body(categoria);

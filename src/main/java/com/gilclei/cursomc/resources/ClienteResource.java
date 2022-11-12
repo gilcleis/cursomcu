@@ -49,7 +49,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}",produces="application/json")
 	public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
 		Cliente cliente = service.findById(id);
 		return ResponseEntity.ok().body(cliente);
