@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gilclei.cursomc.domain.Cliente;
 import com.gilclei.cursomc.dto.ClienteDTO;
+import com.gilclei.cursomc.dto.ClienteNewDTO;
 import com.gilclei.cursomc.services.ClienteService;
 
 @RestController
@@ -55,7 +56,7 @@ public class ClienteResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cliente> insert(@RequestBody ClienteDTO objDto){
+	public ResponseEntity<Cliente> insert(@RequestBody ClienteNewDTO objDto){
 		Cliente obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
