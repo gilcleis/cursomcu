@@ -1,5 +1,6 @@
 package com.gilclei.cursomc.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,9 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.gilclei.cursomc.domain.ItemPedido;
+import com.gilclei.cursomc.domain.PagamentoComBoleto;
 import com.gilclei.cursomc.domain.Pedido;
+import com.gilclei.cursomc.domain.enums.EstadoPagamento;
+import com.gilclei.cursomc.repositories.ItemPedidoRepository;
+import com.gilclei.cursomc.repositories.PagamentoRepository;
 import com.gilclei.cursomc.repositories.PedidoRepository;
+import com.gilclei.cursomc.repositories.ProdutoRepository;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
@@ -21,11 +29,40 @@ public class PedidoService {
 
 	@Autowired
 	private PedidoRepository repository;
+	
+	@Autowired
+	private BoletoService boletoService;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
 
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository; 
+	
+	@Transactional
 	public Pedido insert(Pedido obj) {
 		try {
-
-			return repository.save(obj);
+			obj.setId(null);
+			obj.setInstante(new Date());
+			obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
+			obj.getPagamento().setPedido(obj);
+			if(obj.getPagamento() instanceof PagamentoComBoleto) {
+				PagamentoComBoleto pgto = (PagamentoComBoleto) obj.getPagamento();
+				boletoService.preencherPagamentoComBoleto(pgto,obj.getInstante());
+			}
+			repository.save(obj);
+			pagamentoRepository.save(obj.getPagamento());
+			
+			for(ItemPedido ip : obj.getItens()) {
+				ip.setDesconto(0.0);
+				ip.setPreco(produtoRepository.findById(ip.getProduto().getId()).get().getPreco());
+				ip.setPedido(obj);
+			}
+			itemPedidoRepository.saveAll(obj.getItens());
+			return obj;
 		} catch (DataIntegrityViolationException e) {
 			throw new IntegrityConstraintViolationException(e.getCause().getLocalizedMessage());
 		}

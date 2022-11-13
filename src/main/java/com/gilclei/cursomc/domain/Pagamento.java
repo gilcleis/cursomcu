@@ -13,12 +13,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.gilclei.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
 @Table(name = "pagamentos")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // herança = todos os campo tabela unica ou uma tabela para cada
-														// subclasse
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // herança = todos os campo tabela unica ou uma tabela para cada subclasse
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
