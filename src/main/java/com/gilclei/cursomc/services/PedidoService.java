@@ -19,7 +19,6 @@ import com.gilclei.cursomc.domain.enums.EstadoPagamento;
 import com.gilclei.cursomc.repositories.ItemPedidoRepository;
 import com.gilclei.cursomc.repositories.PagamentoRepository;
 import com.gilclei.cursomc.repositories.PedidoRepository;
-import com.gilclei.cursomc.repositories.ProdutoRepository;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
@@ -37,7 +36,7 @@ public class PedidoService {
 	private PagamentoRepository pagamentoRepository;
 	
 	@Autowired
-	private ProdutoRepository produtoRepository;
+	private ProdutoService produtoService;
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository; 
@@ -58,7 +57,7 @@ public class PedidoService {
 			
 			for(ItemPedido ip : obj.getItens()) {
 				ip.setDesconto(0.0);
-				ip.setPreco(produtoRepository.findById(ip.getProduto().getId()).get().getPreco());
+				ip.setPreco(produtoService.findById(ip.getProduto().getId()).getPreco());
 				ip.setPedido(obj);
 			}
 			itemPedidoRepository.saveAll(obj.getItens());
