@@ -44,6 +44,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	@Transactional
 	public Pedido insert(Pedido obj) {
 		try {
@@ -66,6 +69,7 @@ public class PedidoService {
 				ip.setPedido(obj);
 			}
 			itemPedidoRepository.saveAll(obj.getItens());
+			emailService.sendOrderConfirmationEmail(obj);
 			return obj;
 		} catch (DataIntegrityViolationException e) {
 			throw new IntegrityConstraintViolationException(e.getCause().getLocalizedMessage());
