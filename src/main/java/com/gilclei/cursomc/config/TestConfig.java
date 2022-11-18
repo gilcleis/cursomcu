@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.gilclei.cursomc.services.DBService;
 import com.gilclei.cursomc.services.EmailService;
 import com.gilclei.cursomc.services.MockEmailService;
+import com.gilclei.cursomc.services.SmtpEmailService;
 
 @Configuration
 @Profile("test")
@@ -27,9 +28,11 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Bean
 	public EmailService emailService() {
-		return new MockEmailService();
+//		return new MockEmailService();
+		return new SmtpEmailService();
 	}
 
+	
 	@Override
 	public void run(String... args) throws Exception {
 
