@@ -20,6 +20,7 @@ import com.gilclei.cursomc.domain.PagamentoComCartao;
 import com.gilclei.cursomc.domain.Pedido;
 import com.gilclei.cursomc.domain.Produto;
 import com.gilclei.cursomc.domain.enums.EstadoPagamento;
+import com.gilclei.cursomc.domain.enums.Perfil;
 import com.gilclei.cursomc.domain.enums.TipoCliente;
 import com.gilclei.cursomc.repositories.CategoriaRepository;
 import com.gilclei.cursomc.repositories.CidadeRepository;
@@ -125,6 +126,7 @@ public class DBService {
 
 		Cliente cli2 = new Cliente(null, "Ana Costa", "gilclei@hotmail.com.com", "31628382740", TipoCliente.PESSOAFISICA,passwordEncoder.encode("123"));
 		cli2.getTelefones().addAll(Arrays.asList("93883321", "34252625"));
+		cli2.addPerfil(Perfil.ADMIN);
 
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
