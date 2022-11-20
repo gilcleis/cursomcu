@@ -10,7 +10,7 @@ import com.gilclei.cursomc.domain.PagamentoComBoleto;
 @Service 
 public class BoletoService {
 
-	public static void preencherPagamentoComBoleto(PagamentoComBoleto pgto, Date instante) {
+	public void preencherPagamentoComBoleto(PagamentoComBoleto pgto, Date instante) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(instante);
 		calendar.add(Calendar.DAY_OF_MONTH, 7);
