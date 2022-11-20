@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 
 import com.gilclei.cursomc.services.DBService;
 import com.gilclei.cursomc.services.EmailService;
-import com.gilclei.cursomc.services.MockEmailService;
 import com.gilclei.cursomc.services.SmtpEmailService;
 
 @Configuration
