@@ -18,11 +18,14 @@ import org.springframework.stereotype.Service;
 import com.gilclei.cursomc.domain.Cidade;
 import com.gilclei.cursomc.domain.Cliente;
 import com.gilclei.cursomc.domain.Endereco;
+import com.gilclei.cursomc.domain.enums.Perfil;
 import com.gilclei.cursomc.domain.enums.TipoCliente;
 import com.gilclei.cursomc.dto.ClienteDTO;
 import com.gilclei.cursomc.dto.ClienteNewDTO;
 import com.gilclei.cursomc.repositories.ClienteRepository;
 import com.gilclei.cursomc.repositories.EnderecoRepository;
+import com.gilclei.cursomc.security.UserSS;
+import com.gilclei.cursomc.services.exeptions.AuthorizationException;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
@@ -52,6 +55,13 @@ public class ClienteService {
 	}
 
 	public Cliente findById(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}

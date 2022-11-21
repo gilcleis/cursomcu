@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.gilclei.cursomc.services.exeptions.AuthorizationException;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
@@ -54,4 +55,14 @@ public class ResourceExceptionHandler {
 		}		
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+		String error = "Acesso negado";
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
 }
