@@ -9,9 +9,13 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gilclei.cursomc.domain.Cliente;
 import com.gilclei.cursomc.domain.ItemPedido;
 import com.gilclei.cursomc.domain.PagamentoComBoleto;
 import com.gilclei.cursomc.domain.Pedido;
@@ -19,6 +23,8 @@ import com.gilclei.cursomc.domain.enums.EstadoPagamento;
 import com.gilclei.cursomc.repositories.ItemPedidoRepository;
 import com.gilclei.cursomc.repositories.PagamentoRepository;
 import com.gilclei.cursomc.repositories.PedidoRepository;
+import com.gilclei.cursomc.security.UserSS;
+import com.gilclei.cursomc.services.exeptions.AuthorizationException;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
@@ -108,6 +114,16 @@ public class PedidoService {
 	private void updateData(Pedido entity, Pedido obj) {
 		entity.setInstante(obj.getInstante());
 
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente =  clienteService.findById(user.getId());
+		return repository.findByCliente(cliente, (org.springframework.data.domain.Pageable) pageRequest);
 	}
 
 }
