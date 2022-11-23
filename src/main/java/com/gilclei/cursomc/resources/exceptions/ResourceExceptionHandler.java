@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.gilclei.cursomc.services.exeptions.AuthorizationException;
 import com.gilclei.cursomc.services.exeptions.DatabaseException;
 import com.gilclei.cursomc.services.exeptions.IntegrityConstraintViolationException;
+import com.gilclei.cursomc.services.exeptions.ObjectNotFoundException;
 import com.gilclei.cursomc.services.exeptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -64,5 +65,15 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
+	
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
+		String error = "Not Found";
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
 	
 }
