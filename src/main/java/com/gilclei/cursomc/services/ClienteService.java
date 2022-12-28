@@ -1,5 +1,6 @@
 package com.gilclei.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gilclei.cursomc.domain.Cidade;
 import com.gilclei.cursomc.domain.Cliente;
@@ -41,6 +43,9 @@ public class ClienteService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private S3Service s3Service;
 
 	@Transactional
 	public Cliente insert(Cliente obj) {
@@ -117,7 +122,10 @@ public class ClienteService {
 			cliente.getTelefones().add(objDto.getTelefone3());
 		}
 		return cliente;
-
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 
 }
