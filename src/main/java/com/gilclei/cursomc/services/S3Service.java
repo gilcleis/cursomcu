@@ -53,6 +53,7 @@ public class S3Service {
 			LOG.error("Erro ao converter URL para URI {}",e.getMessage());
 			throw new FileException("Erro ao converter URL para URI");
 		}
+		
 	}
 
 	private String generateFileName(File file) {
