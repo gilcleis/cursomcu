@@ -96,7 +96,7 @@ public class ResourceExceptionHandler {
 //		StandardError err = new StandardError(code.value(), e.getMessage(), System.currentTimeMillis());
 //		return ResponseEntity.status(code).body(err);
 		
-		String error = "Bad Request";
+		String error = "Erro Amazon Service";
 		HttpStatus status = HttpStatus.valueOf(e.getErrorCode());
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
 				request.getRequestURI());
@@ -106,7 +106,7 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(AmazonClientException.class)
 	public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
 
-		String error = "Bad Request";
+		String error = "Erro Amazon Client";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
 				request.getRequestURI());
@@ -116,7 +116,7 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(AmazonS3Exception.class)
 	public ResponseEntity<StandardError> amazonS3(AmazonS3Exception e, HttpServletRequest request) {
 
-		String error = "Bad Request";
+		String error = "Erro Amazon S3";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
 				request.getRequestURI());
