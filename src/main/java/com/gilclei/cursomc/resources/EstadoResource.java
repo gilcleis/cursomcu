@@ -14,10 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.gilclei.cursomc.domain.Cidade;
 import com.gilclei.cursomc.domain.Estado;
+import com.gilclei.cursomc.dto.CidadeDTO;
+import com.gilclei.cursomc.dto.EstadoDTO;
+import com.gilclei.cursomc.services.CidadeService;
 import com.gilclei.cursomc.services.EstadoService;
 
 import io.swagger.annotations.Api;
@@ -32,12 +37,17 @@ public class EstadoResource {
 	@Autowired
 	private EstadoService service;
 	
+	@Autowired
+	private CidadeService cidadeService;
+
+	
 	
 	@GetMapping("/estados")
 	@ApiOperation(value = "Retorna Lista de Estados")
-	public ResponseEntity<List<Estado>> findAll() {
+	public ResponseEntity<List<EstadoDTO>> findAll() {
 		List<Estado> estados = service.findAll();
-		return ResponseEntity.ok().body(estados);
+		List<EstadoDTO>  listDto = estados.stream().map(x-> new EstadoDTO(x)).toList();
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/estados/{id}")
@@ -66,6 +76,13 @@ public class EstadoResource {
 	public ResponseEntity<Estado> update(@PathVariable Integer id,@RequestBody Estado obj){
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value = "/estados/{estadoId}/cidades", method = RequestMethod.GET)
+	public ResponseEntity<List<CidadeDTO>> findCidades(@PathVariable Integer estadoId) {
+		List<Cidade> list = cidadeService.findByEstado(estadoId);
+		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).toList();
+		return ResponseEntity.ok().body(listDto);
 	}
 
 }

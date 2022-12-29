@@ -41,25 +41,24 @@ public class EstadoService {
 			if (repository.findBySiglaIgnoreCase(obj.getSigla()).size() > 0) {
 				throw new IntegrityConstraintViolationException("Sigla já cadastrada");
 			}
-		}
-		else {
-			if (repository.findByNotIdAndNome(obj.getId(),obj.getNome()).size() > 0) {
+		} else {
+			if (repository.findByNotIdAndNome(obj.getId(), obj.getNome()).size() > 0) {
 				throw new IntegrityConstraintViolationException("Nome já cadastrado");
 			}
-			if (repository.findByNotIdAndSigla(obj.getId(),obj.getSigla()).size() > 0) {
+			if (repository.findByNotIdAndSigla(obj.getId(), obj.getSigla()).size() > 0) {
 				throw new IntegrityConstraintViolationException("Sigla já cadastrado");
 			}
 		}
 	}
 
-	@Transactional 
+	@Transactional
 	public Estado findById(Integer id) {
 		Optional<Estado> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public List<Estado> findAll() {
-		return repository.findAll();
+		return repository.findAllByOrderByNome();
 	}
 
 	public List<Estado> findByname(String nome) {
@@ -78,7 +77,7 @@ public class EstadoService {
 
 	public Estado update(Integer id, Estado obj) {
 		try {
-			Estado entity = findById(id);			
+			Estado entity = findById(id);
 			updateData(entity, obj);
 			checkUnique(entity);
 			return repository.save(entity);
@@ -89,7 +88,8 @@ public class EstadoService {
 
 	private void updateData(Estado entity, Estado obj) {
 		entity.setNome(obj.getNome());
-
 	}
+
+	
 
 }

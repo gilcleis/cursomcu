@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gilclei.cursomc.domain.Estado;
 
@@ -35,5 +36,8 @@ public interface EstadoRepository extends JpaRepository<Estado, Integer> {
 	@Query(value = "SELECT * FROM estados e "
 			+ "WHERE e.id != :id and e.sigla = :sigla" , nativeQuery = true)
 	List<Estado> findByNotIdAndSigla(Integer id, String sigla);
+	
+	@Transactional(readOnly=true)
+	public List<Estado> findAllByOrderByNome();
 
 }
