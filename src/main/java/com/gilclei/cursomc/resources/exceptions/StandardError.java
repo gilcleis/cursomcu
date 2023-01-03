@@ -67,4 +67,16 @@ public class StandardError implements Serializable {
 		this.path = path;
 	}
 
+	public String toJson() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("\"timestamp\":" +"\""+ timestamp +"\""+ ",");
+		sb.append("\"status\":" + status + ",");
+		sb.append("\"error\":" +"\""+ error +"\""+ ",");
+		sb.append("\"message\":" +"\""+ message +"\""+ ",");
+		sb.append("\"path\":" +"\""+ path+"\"");
+		sb.append("}");
+		return sb.toString();
+	}
+
 }
